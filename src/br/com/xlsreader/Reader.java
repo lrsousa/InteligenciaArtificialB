@@ -49,7 +49,7 @@ public class Reader {
 	    		if(row.getRowNum() > 0) {
 			    	if((formatter.formatCellValue(row.getCell(6)).equals("3") || formatter.formatCellValue(row.getCell(6)).equals("6")) && !formatter.formatCellValue(row.getCell(1)).equals(s)) {
 			    		p = Paths.get(directory.getPath() + File.separator + "FORA_" + s + "_" + formatter.formatCellValue(row.getCell(4)).toUpperCase() + "_" + formatter.formatCellValue(row.getCell(6)) + ".csv");
-			    		StringBuilder sb = new StringBuilder().append(row.getRowNum()).append(";").append(formatter.formatCellValue(row.getCell(7))).append("\n");
+			    		StringBuilder sb = new StringBuilder().append(formatter.formatCellValue(row.getCell(7))).append("\n");
 			    		
 			    		Files.write(p, sb.toString().getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
 			    	}
