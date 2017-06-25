@@ -21,7 +21,8 @@ public class Main {
 		for (File f : folder.listFiles()) {
 			System.out.println("Lendo arquivo: " + f.getName());
 //			r.separaPeriodos(f);
-			r.separaIndividual(f);
+//			r.separaIndividual(f);
+			r.separaPeriodosComLinhasAlunos(f);
 			
 			Files.move(f.toPath(), destinyFolder.resolve(f.getName()));
 			
