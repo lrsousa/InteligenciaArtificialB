@@ -20,7 +20,8 @@ public class Main {
 
 		for (File f : folder.listFiles()) {
 			System.out.println("Lendo arquivo: " + f.getName());
-			r.exportSheet(f);
+//			r.separaPeriodos(f);
+			r.separaIndividual(f);
 			
 			Files.move(f.toPath(), destinyFolder.resolve(f.getName()));
 			
