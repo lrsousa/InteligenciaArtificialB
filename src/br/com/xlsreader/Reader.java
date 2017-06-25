@@ -2,6 +2,7 @@ package br.com.xlsreader;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -9,7 +10,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -168,7 +172,25 @@ public class Reader {
 		
 	}
 	
-	
+	public void juntaEssaPorraToda(File file) throws IOException {
+		List<String> lines = Files.readAllLines(file.toPath());
+		System.out.println(file.getAbsolutePath());
+		Path path = Paths.get(System.getProperty("user.dir"));
+		
+		String pattern = Pattern.quote(System.getProperty("file.separator"));
+		File directory = new File(Paths.get(path + File.separator + "finalSequencia" + File.separator + file.getAbsolutePath().split(pattern)[6] + File.separator).toString());
+		
+		if(!directory.exists()) directory.mkdirs();
+		
+		
+//		lines.forEach(System.out::println);
+
+		System.out.println(directory);
+		
+//		Path p = Paths.get(directory.getPath() + File.separator + "FORA_" + s + "_" + formatter.formatCellValue(row.getCell(4)).toUpperCase() + "_3.csv");
+//		Files.write(p, sb.toString().getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+		
+	}
 	
 	
 	

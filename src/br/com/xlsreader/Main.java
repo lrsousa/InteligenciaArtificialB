@@ -18,15 +18,22 @@ public class Main {
 		
 		Reader r = new Reader();
 
-		for (File f : folder.listFiles()) {
-			System.out.println("Lendo arquivo: " + f.getName());
+//		for (File f : folder.listFiles()) {
+//			System.out.println("Lendo arquivo: " + f.getName());
 //			r.separaPeriodos(f);
 //			r.separaIndividual(f);
-			r.separaPeriodosComLinhasAlunos(f);
+//			r.separaPeriodosComLinhasAlunos(f);
 			
-			Files.move(f.toPath(), destinyFolder.resolve(f.getName()));
+//			Files.move(f.toPath(), destinyFolder.resolve(f.getName()));
 			
+//		}
+		folder = new File(path.toString() + File.separator + "processados" + File.separator + "spam" + File.separator);
+		for (File f : folder.listFiles()) {
+			for(File file : f.listFiles()) {
+				r.juntaEssaPorraToda(file);
+			}
 		}
+		
 		System.out.println("Fim de leitura.");
 	}
 }
