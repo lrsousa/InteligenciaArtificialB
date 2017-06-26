@@ -9,7 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -178,20 +180,29 @@ public class Reader {
 		Path path = Paths.get(System.getProperty("user.dir"));
 		
 		String pattern = Pattern.quote(System.getProperty("file.separator"));
-		File directory = new File(Paths.get(path + File.separator + "finalSequencia" + File.separator + file.getAbsolutePath().split(pattern)[6] + File.separator).toString());
+		File directory = new File(Paths.get(path + File.separator + "finalSequencia" + File.separator + file.getParentFile().getName() + File.separator).toString());
 		
 		if(!directory.exists()) directory.mkdirs();
-		
-		
-//		lines.forEach(System.out::println);
 
 		System.out.println(directory);
 		
-//		Path p = Paths.get(directory.getPath() + File.separator + "FORA_" + s + "_" + formatter.formatCellValue(row.getCell(4)).toUpperCase() + "_3.csv");
-//		Files.write(p, sb.toString().getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+		Path p = Paths.get(directory.getPath() + File.separator + file.getName().replaceAll("FORA_", "FINAL_"));
+//		Files.write(p, "OPAAAAA".getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+		
+		List<String> columnNameSequenciaDeEventos = new ArrayList<String>();
+		lines.forEach(s -> {columnNameSequenciaDeEventos.add(s.split(Pattern.quote(" #SUP: "))[0].replaceAll(" -1 -2 ", ">").replaceAll(" -1", ">").replaceAll(" ", ""));});
+		
+		StringBuilder sb = new StringBuilder().append("aluno;");
+		for(Iterator<String> iterator = columnNameSequenciaDeEventos.iterator(); iterator.hasNext();) {
+			sb.append(iterator.next()).append(";");
+			;
+		}
+		Files.write(p, sb.toString().getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+		
+		System.out.println(sb.toString());
+		for (String c : columnNameSequenciaDeEventos) {
+			System.out.println(c);
+		}
 		
 	}
-	
-	
-	
 }
