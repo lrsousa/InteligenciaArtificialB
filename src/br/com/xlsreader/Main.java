@@ -27,10 +27,11 @@ public class Main {
 //			Files.move(f.toPath(), destinyFolder.resolve(f.getName()));
 			
 //		}
+		
 		folder = new File(path.toString() + File.separator + "processados" + File.separator + "spam" + File.separator);
 		for (File f : folder.listFiles()) {
 			for(File file : f.listFiles()) {
-				r.juntaEssaPorraToda(file);
+				r.geraContagem(file);
 			}
 		}
 		
