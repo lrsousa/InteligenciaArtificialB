@@ -351,12 +351,15 @@ public class Reader {
 		System.out.println(file.getAbsolutePath());
 		Path path = Paths.get(System.getProperty("user.dir"));
 		
+		String[] vetorNomeArquivo = file.getName().split("_");
+		StringBuilder novoNomeArquivo = new StringBuilder().append(vetorNomeArquivo[0]).append("_").append(vetorNomeArquivo[1]).append("_").append("SUC_INSUC").append("_").append(vetorNomeArquivo[3]);
+		
 //		String pattern = Pattern.quote(System.getProperty("file.separator"));
 		File directory = new File(Paths.get(path + File.separator + "finalSequenciaV2" + File.separator + file.getParentFile().getName() + File.separator).toString());
 		
 		if(!directory.exists()) directory.mkdirs();
 
-		Path p = Paths.get(directory.getPath() + File.separator + file.getName());
+		Path p = Paths.get(directory.getPath() + File.separator + novoNomeArquivo.toString());
 		
 		Path processadoComLinhasAlunos = Paths.get(path + File.separator + "processadosComLinhasAlunos" + File.separator +  file.getParentFile().getName() + File.separator + file.getName());
 		List<String> arquivoComLinhasAlunos = Files.readAllLines(processadoComLinhasAlunos);
