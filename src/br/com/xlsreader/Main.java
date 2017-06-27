@@ -28,10 +28,18 @@ public class Main {
 			
 //		}
 		
+//		folder = new File(path.toString() + File.separator + "processados" + File.separator + "spam" + File.separator);
+//		for (File f : folder.listFiles()) {
+//			for(File file : f.listFiles()) {
+//				r.geraContagem(file);
+//			}
+//		}
+
 		folder = new File(path.toString() + File.separator + "processados" + File.separator + "spam" + File.separator);
 		for (File f : folder.listFiles()) {
 			for(File file : f.listFiles()) {
-				r.geraContagem(file);
+//				r.geraContagemIndividual(file);
+				r.geraContagemV2(file);
 			}
 		}
 		

@@ -260,4 +260,126 @@ public class Reader {
 		}
 		
 	}
+	
+	public void geraContagemIndividual(File file) throws IOException {
+		List<String> spamFile = Files.readAllLines(file.toPath());
+		System.out.println(file.getAbsolutePath());
+		Path path = Paths.get(System.getProperty("user.dir"));
+		
+//		String pattern = Pattern.quote(System.getProperty("file.separator"));
+		File directory = new File(Paths.get(path + File.separator + "finalSequencia" + File.separator + "spam" + File.separator + file.getParentFile().getName() + File.separator).toString());
+		
+		if(!directory.exists()) directory.mkdirs();
+		
+		Path p = Paths.get(directory.getPath() + File.separator + file.getName());
+		List<String> columnNameSequenciaDeEventos = new ArrayList<String>();
+		
+		HashMap<String, String> identificadorColunas = new HashMap<String, String>();
+		HashMap<String, String> sequenciaComAlunos = new HashMap<String, String>();
+		
+		Path processadoComLinhasAlunos = Paths.get(path + File.separator + "processadosComLinhasAlunos" + File.separator +  file.getParentFile().getName() + File.separator + "FORA_" + file.getName());
+		List<String> arquivoComLinhasAlunos = Files.readAllLines(processadoComLinhasAlunos);
+		HashMap<String, String> identificadorAlunos = new HashMap<String, String>();
+		Integer i = 0;
+		for(String s : arquivoComLinhasAlunos) {
+			identificadorAlunos.put(i.toString(), s.split(";")[1]);
+			i++;
+		}
+		HashSet<String> alunos = new HashSet<String>(); 
+
+		i = 0;
+		for(String s : spamFile) {
+			String[] sSeparada = s.split(Pattern.quote("#SUP: "));
+			String seq = sSeparada[0].replaceAll(" -1 ", ">");
+			columnNameSequenciaDeEventos.add(seq);
+			identificadorColunas.put(seq, i.toString());
+			i++;
+			
+			String linhaAlunos = s.split(Pattern.quote("#SID: "))[1];
+
+			sequenciaComAlunos.put(seq, linhaAlunos);
+			
+			List<String> alunosV = Arrays.asList(linhaAlunos.split(" "));
+			for (String a : alunosV) {
+				alunos.add(identificadorAlunos.get(a));
+			}
+		}
+		
+		StringBuilder sb = new StringBuilder().append("aluno;");
+		for(Iterator<String> iterator = columnNameSequenciaDeEventos.iterator(); iterator.hasNext();) {
+			sb.append(iterator.next()).append(";");
+		}
+		sb.append("\n");
+		Files.write(p, sb.toString().getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+		
+		
+		for (String aluno : alunos) {
+			sb = new StringBuilder().append(aluno).append(";");
+			for (String col : columnNameSequenciaDeEventos) {
+				List<String> l = Arrays.asList(sequenciaComAlunos.get(col).split(" "));
+				Boolean consta = false;
+				int valor = 0;
+				for (String a : l) {
+					if(identificadorAlunos.get(a).equals(aluno)) {
+						consta = true;
+						valor++;
+//						System.out.println("consta");
+					}
+//					System.out.println(a);
+				}
+				
+				if(consta) {
+//					System.out.println(aluno);
+					sb.append(valor).append(";");
+				} else {
+					sb.append(";");
+				}
+				
+				
+			}
+			sb.append("\n");
+//			System.out.println(sb.toString());
+			Files.write(p, sb.toString().getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+			
+		}
+		
+	}
+
+	
+	public void geraContagemV2(File file) throws IOException {
+		List<String> spamFile = Files.readAllLines(file.toPath());
+		System.out.println(file.getAbsolutePath());
+		Path path = Paths.get(System.getProperty("user.dir"));
+		
+//		String pattern = Pattern.quote(System.getProperty("file.separator"));
+		File directory = new File(Paths.get(path + File.separator + "finalSequenciaV2" + File.separator + file.getParentFile().getName() + File.separator).toString());
+		
+		if(!directory.exists()) directory.mkdirs();
+
+		Path p = Paths.get(directory.getPath() + File.separator + file.getName());
+		
+		Path processadoComLinhasAlunos = Paths.get(path + File.separator + "processadosComLinhasAlunos" + File.separator +  file.getParentFile().getName() + File.separator + file.getName());
+		List<String> arquivoComLinhasAlunos = Files.readAllLines(processadoComLinhasAlunos);
+		HashMap<String, String> identificadorAlunos = new HashMap<String, String>();
+		Integer i = 0;
+		for(String s : arquivoComLinhasAlunos) {
+			identificadorAlunos.put(i.toString(), s.split(";")[1]);
+			i++;
+		}
+		i = 0;
+		StringBuilder sb = new StringBuilder().append("aluno;");
+		for(String s : spamFile) {
+			String[] sSeparada = s.split(Pattern.quote("#SUP: "));
+			String seq = sSeparada[0].replaceAll(" -1 ", ">");
+			String linhaAlunos = s.split(Pattern.quote("#SID: "))[1];
+			
+			List<String> alunosV = Arrays.asList(linhaAlunos.split(" "));
+			for (String a : alunosV) {
+				Files.write(p, (identificadorAlunos.get(a) + ";" + seq + "\n").getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+			}
+		}
+		
+	}
+
+	
 }
